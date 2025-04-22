@@ -1699,17 +1699,6 @@ checksum = "ebc1c04c71510c7f702b52b7c350734c9ff1295c464a03335b00bb84fc54f853"
 
 [[package]]
 name = "vello"
-version = "0.1.0"
-dependencies = [
- "peniko",
- "pollster",
- "tinyvg",
- "vello 0.4.1",
- "winit",
-]
-
-[[package]]
-name = "vello"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3d5b0bafa35e0c2e4132104576d6bcec4bf7cd0044f1760e92ecae0d4d9bc0e7"
@@ -1738,6 +1727,17 @@ dependencies = [
  "peniko",
  "skrifa",
  "smallvec",
+]
+
+[[package]]
+name = "vello_example"
+version = "0.1.0"
+dependencies = [
+ "peniko",
+ "pollster",
+ "tinyvg",
+ "vello",
+ "winit",
 ]
 
 [[package]]

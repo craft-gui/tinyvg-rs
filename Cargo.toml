@@ -1,5 +1,5 @@
 [workspace]
-members = ["examples/vello"]
+members = ["examples/vello_example"]
 resolver = "3"
 
 [package]

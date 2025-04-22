@@ -1,0 +1,16 @@
+[package]
+name = "vello_example"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "vello"
+path = "vello.rs"
+
+[dependencies]
+tinyvg = { path = "../.." }
+
+peniko = "0.3.1"
+winit = "0.30.9"
+pollster = "0.4.0"
+vello = {version = "0.4.1", default-features = false, features = ["wgpu"]}
