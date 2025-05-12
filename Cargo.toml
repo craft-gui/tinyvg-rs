@@ -4,8 +4,19 @@ resolver = "3"
 
 [package]
 name = "tinyvg"
-version = "0.1.0"
+version = "0.0.1"
 edition = "2024"
+description = "A low-level library for parsing binary TinyVG files into Rust data structures."
+license-file = "LICENSE"
+homepage = "https://github.com/craft-gui/tinyvg-rs"
+repository = "https://github.com/craft-gui/tinyvg-rs"
+
+exclude = [
+    "examples/app-icon.tvg",
+    "examples/chart.tvg",
+    "examples/tiger.tvg",
+    "images/vello_example.gif"
+]
 
 [dependencies]
 byteorder = "1.5.0"
