@@ -2,10 +2,10 @@ use peniko::color::AlphaColor;
 use peniko::kurbo::SvgArc;
 use peniko::{Brush, Fill, Gradient};
 use std::sync::Arc;
-use tinyvg::color_table::ColorTable;
-use tinyvg::commands::{DrawCommand, Path, PathCommand, Point, Segment, Style};
-use tinyvg::common::Unit;
-use tinyvg::TinyVg;
+use tinyvg_rs::color_table::ColorTable;
+use tinyvg_rs::commands::{DrawCommand, Path, PathCommand, Point, Segment, Style};
+use tinyvg_rs::common::Unit;
+use tinyvg_rs::TinyVg;
 use vello::kurbo::{Affine, BezPath, Line, Stroke};
 use vello::peniko::color::palette;
 use vello::peniko::Color;
@@ -65,7 +65,7 @@ fn to_vello_point(point: Point) -> kurbo::Point {
     kurbo::Point::new(point.x.0, point.y.0)
 }
 
-fn to_vello_color(color: tinyvg::color_table::RgbaF32) -> Color {
+fn to_vello_color(color: tinyvg_rs::color_table::RgbaF32) -> Color {
     Color::from(AlphaColor::new([color.0, color.1, color.2, color.3]))
 }
 
@@ -138,17 +138,13 @@ impl ApplicationHandler for TinyVgExample<'_> {
                 let device_handle = &self.context.devices[surface.dev_id];
 
                 let renderer = self.renderers[surface.dev_id].as_mut().unwrap();
-                let surface_texture = surface
-                    .surface
-                    .get_current_texture()
-                    .expect("failed to get surface texture");
-
+                
                 renderer
-                    .render_to_surface(
+                    .render_to_texture(
                         &device_handle.device,
                         &device_handle.queue,
                         &self.scene,
-                        &surface_texture,
+                        &surface.target_view,
                         &vello::RenderParams {
                             base_color: palette::css::WHITE,
                             width,
@@ -158,13 +154,26 @@ impl ApplicationHandler for TinyVgExample<'_> {
                     )
                     .expect("failed to render to surface");
 
-                let encoder =
+
+                let surface_texture = surface
+                    .surface
+                    .get_current_texture()
+                    .expect("failed to get surface texture");
+
+                let mut encoder =
                     device_handle
                         .device
                         .create_command_encoder(&wgpu::CommandEncoderDescriptor {
                             label: Some("Surface Blit"),
                         });
-
+                surface.blitter.copy(
+                    &device_handle.device,
+                    &mut encoder,
+                    &surface.target_view,
+                    &surface_texture
+                        .texture
+                        .create_view(&wgpu::TextureViewDescriptor::default()),
+                );
 
                 device_handle.queue.submit([encoder.finish()]);
                 surface_texture.present();
@@ -195,10 +204,10 @@ fn create_vello_renderer(render_cx: &RenderContext, surface: &RenderSurface<'_>)
     Renderer::new(
         &render_cx.devices[surface.dev_id].device,
         RendererOptions {
-            surface_format: Some(surface.format),
             use_cpu: false,
             antialiasing_support: vello::AaSupport::all(),
             num_init_threads: None,
+            pipeline_cache: None,
         },
     )
         .expect("Couldn't create renderer")

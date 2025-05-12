@@ -3,7 +3,7 @@ members = ["examples/vello_example"]
 resolver = "3"
 
 [package]
-name = "tinyvg"
+name = "tinyvg-rs"
 version = "0.0.1"
 edition = "2024"
 description = "A low-level library for parsing binary TinyVG files into Rust data structures."
