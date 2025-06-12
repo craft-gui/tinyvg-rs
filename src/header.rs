@@ -99,6 +99,12 @@ impl TinyVgHeader {
     pub(crate) fn parse(cursor: &mut Cursor<&[u8]>) -> Result<Self, TinyVgParseError> {
         let mut magic = [0u8; 2];
         cursor.read_exact(&mut magic).map_err(|_| TinyVgParseError::InvalidHeader)?;
+        
+        // Must be { 0x72, 0x56 }
+        if magic[0] != 0x72 || magic[1] != 0x56 {
+            return Err(TinyVgParseError::InvalidHeader);
+        }
+        
         let version = cursor.read_u8().map_err(|_| TinyVgParseError::InvalidHeader)?;
 
         // The encoded scale, color encoding, and coordinate range data.
