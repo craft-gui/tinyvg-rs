@@ -2,7 +2,7 @@ use std::io::Cursor;
 use byteorder::{LittleEndian, ReadBytesExt};
 use crate::{TinyVgParseError};
 use crate::header::{ColorEncoding, TinyVgHeader};
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct RgbaF32(pub f32, pub f32, pub f32, pub f32);
 
 pub type ColorTable = Vec<RgbaF32>;

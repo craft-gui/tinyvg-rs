@@ -1,10 +1,10 @@
-use std::io::{Cursor, Read};
-use byteorder::ReadBytesExt;
 use crate::common::{read_size, read_variable_sized_unsigned_number};
 use crate::TinyVgParseError;
+use byteorder::ReadBytesExt;
+use std::io::{Cursor, Read};
 
 #[repr(u8)]
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub enum ColorEncoding {
     /// Each color is a 4-tuple (red, green, blue, alpha) of bytes with the color
     /// channels encoded in sRGB and the alpha as linear alpha.
@@ -40,7 +40,7 @@ impl ColorEncoding {
 }
 
 #[repr(u8)]
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub enum CoordinateRange {
     /// Each Unit takes up 16 bit.
     Default = 0,

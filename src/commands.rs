@@ -16,12 +16,20 @@ pub enum StyleType {
 }
 
 impl StyleType {
-    fn from_u8(value: u8) -> Self {
+    pub(crate) fn from_u8(value: u8) -> Self {
         match value {
             0 => Self::Flat,
             1 => Self::Linear,
             2 => Self::Radial,
             _ => unreachable!("Style::from_u8 must be 0, 1, or 2.")
+        }
+    }
+    
+    pub(crate) fn from_style(style: &Style) -> Self {
+        match style {
+            Style::FlatColor(..)   => StyleType::Flat,
+            Style::LinearGradient(..) => StyleType::Linear,
+            Style::RadialGradient(..) => StyleType::Radial
         }
     }
 }
@@ -186,6 +194,13 @@ impl Point {
     pub fn move_to(&self, point: &Point) -> Self {
         point.clone()
     }
+
+    pub fn new(x: Unit, y: Unit) -> Self {
+        Point {
+            x,
+            y
+        }
+    }
 }
 
 #[derive(Debug)]
@@ -349,7 +364,7 @@ pub enum DrawCommand {
 
 #[repr(u8)]
 #[derive(Debug, PartialEq)]
-enum PathCommandType {
+pub(crate) enum PathCommandType {
     Line = 0,
     HorizontalLine = 1,
     VerticalLine = 2,
@@ -376,14 +391,14 @@ impl PathCommandType {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct CubicBezier {
     pub control_point_0: Point,
     pub control_point_1: Point,
     pub point_1: Point,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ArcCircle {
     pub large_arc: bool,
     pub sweep: bool,
@@ -391,7 +406,7 @@ pub struct ArcCircle {
     pub target: Point,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct ArcEllipse {
     pub large_arc: bool,
     pub sweep: bool,
@@ -401,13 +416,13 @@ pub struct ArcEllipse {
     pub target: Point,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct QuadraticBezier {
     pub control_point: Point,
     pub point_1: Point,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum PathCommand {
     Line(Point, Option<Unit>),
     HorizontalLine(Unit, Option<Unit>),
@@ -419,7 +434,7 @@ pub enum PathCommand {
     QuadraticBezier(QuadraticBezier, Option<Unit>),
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Segment {
     pub start: Point,
     pub path_commands: Vec<PathCommand>,
