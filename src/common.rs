@@ -52,6 +52,7 @@ pub(crate) fn read_unit(scale: u8, cursor: &mut Cursor<&[u8]>, coordinate_range:
     Ok(Unit(units_in_css_px))
 }
 
+#[allow(dead_code)]
 pub(crate) fn write_unit(
     scale: u8,
     cursor: &mut Cursor<Vec<u8>>,
@@ -82,6 +83,7 @@ pub(crate) fn write_unit(
     }
 }
 
+#[allow(dead_code)]
 pub(crate) fn write_variable_sized_unsigned_number(
     cursor: &mut Cursor<Vec<u8>>,
     mut value: u64,
@@ -100,7 +102,7 @@ pub(crate) fn write_variable_sized_unsigned_number(
     Ok(())
 }
 
-
+#[allow(dead_code)]
 pub(crate) fn write_size(
     range: &CoordinateRange,
     cursor: &mut Cursor<Vec<u8>>,
@@ -113,6 +115,7 @@ pub(crate) fn write_size(
     }
 }
 
+#[allow(dead_code)]
 pub(crate) fn write_point(point: &Point, header: &TinyVgHeader, cursor: &mut Cursor<Vec<u8>>) -> Result<(), TinyVgParseError> {
     write_unit(header.scale, cursor, &header.coordinate_range, point.x)?;
     write_unit(header.scale, cursor, &header.coordinate_range, point.y)?;

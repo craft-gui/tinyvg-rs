@@ -4,7 +4,7 @@ resolver = "3"
 
 [package]
 name = "tinyvg-rs"
-version = "0.0.1"
+version = "0.0.2"
 edition = "2024"
 description = "A low-level library for parsing binary TinyVG files into Rust data structures."
 license-file = "LICENSE"
@@ -20,3 +20,8 @@ exclude = [
 
 [dependencies]
 byteorder = "1.5.0"
+usvg = { version = "0.45.1", features = ["default"], optional = true }
+
+[features]
+default = []
+svg-to-tvg = ["dep:usvg"]

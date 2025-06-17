@@ -24,7 +24,8 @@ impl StyleType {
             _ => unreachable!("Style::from_u8 must be 0, 1, or 2.")
         }
     }
-    
+
+    #[allow(dead_code)]
     pub(crate) fn from_style(style: &Style) -> Self {
         match style {
             Style::FlatColor(..)   => StyleType::Flat,

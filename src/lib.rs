@@ -2,6 +2,8 @@ pub mod header;
 pub mod common;
 pub mod color_table;
 pub mod commands;
+#[cfg(feature = "svg-to-tvg")]
+pub mod svg_to_tvg;
 
 use crate::color_table::{parse_color_table, ColorTable};
 use crate::commands::{parse_draw_commands, DrawCommand};
